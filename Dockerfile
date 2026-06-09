@@ -1,4 +1,4 @@
-FROM openjdk:17
-COPY "./target/saberpro-1.jar" "app.jar"
+FROM eclipse-temurin:21-jdk
+COPY ./target/saberpro-1.jar app.jar
 EXPOSE 8132
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+CMD ["java", "-jar", "app.jar"]
