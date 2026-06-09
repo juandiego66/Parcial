@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Saber Pro — Iniciar Sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --primary:      #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light:#eff6ff;
+            --border:       #e5e7eb;
+            --gray-50:      #f9fafb;
+            --gray-400:     #9ca3af;
+            --gray-500:     #6b7280;
+            --gray-900:     #111827;
+            --danger:       #dc2626;
+            --danger-light: #fef2f2;
+            --danger-border:#fecaca;
+            --success:      #16a34a;
+            --success-light:#f0fdf4;
+            --success-border:#bbf7d0;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        /* Panel izquierdo */
+        .left-panel {
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: white;
+        }
+
+        .left-panel .logo-icon {
+            font-size: 56px;
+            margin-bottom: 24px;
+        }
+
+        .left-panel h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .left-panel p {
+            font-size: 15px;
+            opacity: .8;
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .left-panel .divider-line {
+            width: 40px;
+            height: 2px;
+            background: rgba(255,255,255,.4);
+            margin: 24px auto;
+            border-radius: 2px;
+        }
+
+        .left-panel .features {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .left-panel .features li {
+            font-size: 13px;
+            opacity: .75;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Panel derecho */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-box h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 4px;
+        }
+
+        .login-box .subtitle {
+            color: var(--gray-400);
+            font-size: 13.5px;
+            margin-bottom: 28px;
+        }
+
+        /* Quick access */
+        .quick-box {
+            background: var(--primary-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 22px;
+        }
+
+        .quick-box label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .quick-box select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            color: var(--gray-900);
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .quick-box select:focus { outline: none; border-color: var(--primary); }
+
+        /* Separador */
+        .sep {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+            color: var(--gray-400);
+            font-size: 12px;
+        }
+        .sep::before, .sep::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Formulario */
+        .form-group { margin-bottom: 16px; }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--gray-900);
+            font-family: inherit;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 11px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s;
+            margin-top: 4px;
+        }
+
+        .btn-login:hover { background: var(--primary-dark); }
+
+        .alert {
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid;
+        }
+        .alert-danger  { background:var(--danger-light); color:var(--danger); border-color:var(--danger-border); }
+        .alert-success { background:var(--success-light); color:var(--success); border-color:var(--success-border); }
+
+        @media (max-width: 768px) {
+            body { grid-template-columns: 1fr; }
+            .left-panel { display: none; }
+            .right-panel { padding: 40px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Panel izquierdo -->
+<div class="left-panel">
+    <div class="logo-icon">🎓</div>
+    <h1>Saber Pro</h1>
+    <p>Sistema de Gestión Académica de Resultados ICFES</p>
+    <div class="divider-line"></div>
+    <ul class="features">
+        <li>✦ Gestión de resultados Saber Pro y TYT</li>
+        <li>✦ Control de beneficios académicos</li>
+        <li>✦ Seguimiento de pagos y aprobaciones</li>
+        <li>✦ Informes por programa y facultad</li>
+    </ul>
+</div>
+
+<!-- Panel derecho -->
+<div class="right-panel">
+    <div class="login-box">
+        <h2>Bienvenido</h2>
+        <p class="subtitle">Ingresa tus credenciales para continuar</p>
+
+        <div th:if="${error}"  class="alert alert-danger">⚠ <span th:text="${error}"></span></div>
+        <div th:if="${logout}" class="alert alert-success">✓ Sesión cerrada correctamente.</div>
+
+        <!-- Acceso rápido -->
+        <div class="quick-box">
+            <label>⚡ Acceso rápido — demo</label>
+            <select id="quickSelect" onchange="autocompletar(this.value)">
+                <option value="">— Seleccionar usuario de prueba —</option>
+                <option value="admin@saberpro.edu.co|admin123">
+                    🔧 Administrador
+                </option>
+                <option value="coordinador@saberpro.edu.co|coord123">
+                    🧑‍💼 Coordinador — Carlos Ramírez
+                </option>
+                <option value="docente1@saberpro.edu.co|doc1123">
+                    👩‍🏫 Docente — María González (Tecnología)
+                </option>
+                <option value="docente2@saberpro.edu.co|doc2123">
+                    👨‍🏫 Docente — Juan Mendez (Ingeniería)
+                </option>
+                <option value="barbosa.ek20183007722@saberpro.edu.co|1020183007722">
+                    👨‍🎓 Estudiante — BARBOSA (200 pts, Nivel 4)
+                </option>
+            </select>
+        </div>
+
+        <div class="sep">o ingresa manualmente</div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="correo" name="correo"
+                       placeholder="usuario@saberpro.edu.co" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena"
+                       placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-login">Ingresar al sistema →</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function autocompletar(valor) {
+        if (!valor) return;
+        const [correo, pass] = valor.split('|');
+        document.getElementById('correo').value    = correo;
+        document.getElementById('contrasena').value = pass;
+        setTimeout(() => document.getElementById('quickSelect').selectedIndex = 0, 100);
+    }
+</script>
+</body>
+</html>

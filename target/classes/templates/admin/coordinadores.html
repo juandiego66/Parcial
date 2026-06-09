@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin — Coordinadores</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ADMINISTRADOR')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Coordinadores</h1>
+        <p>Gestión de coordinadores académicos</p>
+    </div>
+
+    <div th:if="${exito}" class="alert alert-success">✓ <span th:text="${exito}"></span></div>
+    <div th:if="${error}" class="alert alert-danger">⚠ <span th:text="${error}"></span></div>
+
+    <div class="card">
+        <div class="card-title"
+             th:text="${coordinador.id != null} ? 'Editar coordinador' : 'Nuevo coordinador'"></div>
+        <form th:action="@{/admin/coordinadores/guardar}"
+              th:object="${coordinador}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>N° Cédula *</label>
+                    <input type="text" th:field="*{numeroCedula}" required>
+                </div>
+                <div class="form-group">
+                    <label>Primer nombre *</label>
+                    <input type="text" th:field="*{primerNombre}" required>
+                </div>
+                <div class="form-group">
+                    <label>Segundo nombre</label>
+                    <input type="text" th:field="*{segundoNombre}">
+                </div>
+                <div class="form-group">
+                    <label>Primer apellido *</label>
+                    <input type="text" th:field="*{primerApellido}" required>
+                </div>
+                <div class="form-group">
+                    <label>Segundo apellido</label>
+                    <input type="text" th:field="*{segundoApellido}">
+                </div>
+                <div class="form-group">
+                    <label>Correo *</label>
+                    <input type="email" th:field="*{correo}" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="text" th:field="*{telefono}">
+                </div>
+                <div class="form-group">
+                    <label>Área asignada</label>
+                    <input type="text" th:field="*{areaAsignada}">
+                </div>
+                <div class="form-group">
+                    <label>Contraseña *</label>
+                    <input type="password" th:field="*{contrasena}" required>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a th:href="@{/admin/coordinadores}" class="btn btn-ghost">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Listado de coordinadores</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cédula</th><th>Nombre</th><th>Correo</th>
+                        <th>Teléfono</th><th>Área</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${coordinadores}">
+                        <td th:text="${c.numeroCedula}"></td>
+                        <td th:text="${c.nombreCompleto}"></td>
+                        <td th:text="${c.correo}"></td>
+                        <td th:text="${c.telefono}"></td>
+                        <td th:text="${c.areaAsignada}"></td>
+                        <td>
+                            <div class="td-actions">
+                                <a th:href="@{/admin/coordinadores/editar/{id}(id=${c.id})}"
+                                   class="btn btn-ghost btn-sm">Editar</a>
+                                <a th:href="@{/admin/coordinadores/eliminar/{id}(id=${c.id})}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(coordinadores)}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">🧑‍💼</div>
+                                <p>No hay coordinadores registrados</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

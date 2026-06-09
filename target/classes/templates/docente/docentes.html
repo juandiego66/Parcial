@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Docente — Docentes</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('DOCENTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Docentes</h1>
+        <p>Consulta de docentes por facultad o cédula</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Buscar por cédula</div>
+        <form th:action="@{/docente/docentes}" method="get"
+              style="display:flex; gap:10px; align-items:flex-end;">
+            <div class="form-group" style="flex:1;">
+                <label>Número de cédula</label>
+                <input type="text" name="cedula"
+                       th:value="${busquedaCedula}"
+                       placeholder="Ingrese la cédula">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <a th:href="@{/docente/docentes}" class="btn btn-ghost">Limpiar</a>
+        </form>
+
+        <div th:if="${docenteEncontrado}" style="margin-top:16px;">
+            <div class="alert alert-success">
+                ✓ Docente encontrado
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cédula</th><th>Nombre</th><th>Correo</th>
+                            <th>Teléfono</th><th>Área</th><th>Facultad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td th:text="${docenteEncontrado.numeroCedula}"></td>
+                            <td th:text="${docenteEncontrado.nombreCompleto}"></td>
+                            <td th:text="${docenteEncontrado.correo}"></td>
+                            <td th:text="${docenteEncontrado.telefono}"></td>
+                            <td th:text="${docenteEncontrado.areaAsignada}"></td>
+                            <td th:text="${docenteEncontrado.facultad != null ?
+                                docenteEncontrado.facultad.nombre : '—'}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div th:if="${busquedaCedula != null and docenteEncontrado == null}"
+             class="alert alert-danger" style="margin-top:12px;">
+            ⚠ No se encontró ningún docente con esa cédula
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Filtrar por facultad</div>
+        <form th:action="@{/docente/docentes}" method="get"
+              style="display:flex; gap:10px; align-items:flex-end; margin-bottom:16px;">
+            <div class="form-group" style="flex:1;">
+                <label>Facultad</label>
+                <select name="facultadId">
+                    <option value="">Todas las facultades</option>
+                    <option th:each="f : ${facultades}"
+                            th:value="${f.id}"
+                            th:text="${f.nombre}"
+                            th:selected="${f.id == facultadSeleccionada}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a th:href="@{/docente/docentes}" class="btn btn-ghost">Ver todos</a>
+        </form>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cédula</th><th>Nombre</th><th>Correo</th>
+                        <th>Teléfono</th><th>Área</th><th>Facultad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="d : ${docentes}">
+                        <td th:text="${d.numeroCedula}"></td>
+                        <td th:text="${d.nombreCompleto}"></td>
+                        <td th:text="${d.correo}"></td>
+                        <td th:text="${d.telefono}"></td>
+                        <td th:text="${d.areaAsignada}"></td>
+                        <td th:text="${d.facultad != null ? d.facultad.nombre : '—'}"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(docentes)}">
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">👨‍🏫</div>
+                                <p>No hay docentes registrados</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

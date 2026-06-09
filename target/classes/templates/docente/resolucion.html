@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resolución de Beneficios</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+
+<!-- Cambia ADMINISTRADOR por el rol correspondiente en cada vista -->
+<div th:replace="~{fragments/navbar :: navbar('DOCENTE')}"></div>
+
+<div class="container">
+    <div class="card">
+        <div th:replace="~{fragments/resolucion-contenido :: contenido}"></div>
+
+        <div style="margin-top:20px;">
+            <!-- Cambia la URL de volver según el rol -->
+            <a th:href="@{/docente/dashboard}" class="btn btn-primary">← Volver</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

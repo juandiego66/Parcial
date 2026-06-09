@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiante — Dashboard</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ESTUDIANTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Hola, <span th:text="${estudiante.primerNombre}"></span></h1>
+        <p><span th:text="${estudiante.programa}"></span> — Semestre
+           <span th:text="${estudiante.semestre}"></span></p>
+    </div>
+
+    <!-- Estado de pago -->
+    <div th:if="${estudiante.pagoSaberPro}" class="alert alert-success">
+        ✓ Pago registrado — Comprobante:
+        <span class="comprobante" th:text="${estudiante.comprobantePago}"></span>
+    </div>
+    <div th:unless="${estudiante.pagoSaberPro}" class="alert alert-warning">
+        ⚠ No has registrado tu pago.
+        <a th:href="@{/estudiante/pago}">Registrar ahora →</a>
+    </div>
+
+    <!-- Datos -->
+    <div class="card">
+        <div class="card-title">Mis datos</div>
+        <div class="info-row">
+            <div class="info-item">
+                <div class="info-label">Cédula</div>
+                <div class="info-value" th:text="${estudiante.numeroCedula}"></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">N° Registro</div>
+                <div class="info-value" th:text="${estudiante.numeroRegistro}"></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Correo</div>
+                <div class="info-value" th:text="${estudiante.correo}"></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Programa</div>
+                <div class="info-value" th:text="${estudiante.programa}"></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Tipo</div>
+                <div class="info-value"
+                     th:text="${estudiante.tipoPrograma.name() == 'TECNOLOGIA' ?
+                         'Tecnología (TYT)' : 'Profesional (Saber Pro)'}"></div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Estado Saber Pro</div>
+                <div class="info-value">
+                    <span th:if="${estudiante.aprobadoSaberPro}"
+                          class="badge badge-success">Aprobado</span>
+                    <span th:unless="${estudiante.aprobadoSaberPro}"
+                          class="badge badge-warning">Pendiente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen resultado -->
+    <div th:if="${resultado}" class="card">
+        <div class="card-title">Mi resultado</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number" th:text="${resultado.puntajeTotal}">—</div>
+                <div class="label">Puntaje global</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" th:text="${resultado.puntajeNivel}">—</div>
+                <div class="label">Nivel</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" th:text="${resultado.nivelIngles}">—</div>
+                <div class="label">Inglés MCER</div>
+            </div>
+            <div class="stat-card" th:classappend="${resultado.tieneBeneficio} ? 'success' : 'danger'">
+                <div class="number"
+                     th:text="${resultado.tieneBeneficio ? '✓' : '✗'}">—</div>
+                <div class="label"
+                     th:text="${resultado.tieneBeneficio ? 'Con beneficio' : 'Sin beneficio'}"></div>
+            </div>
+        </div>
+        <a th:href="@{/estudiante/resultado}" class="btn btn-outline">
+            Ver resultado completo →
+        </a>
+    </div>
+
+    <div th:unless="${resultado}" class="card">
+        <div class="card-title">Mi resultado</div>
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <p>Aún no tienes resultados registrados en el sistema</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Accesos rápidos</div>
+        <div class="quick-grid">
+            <a th:href="@{/estudiante/pago}" class="quick-card">
+                <span class="quick-icon">💳</span>Mi pago
+            </a>
+            <a th:href="@{/estudiante/resultado}" class="quick-card">
+                <span class="quick-icon">📊</span>Mi resultado
+            </a>
+            <a th:href="@{/estudiante/resultados}" class="quick-card">
+                <span class="quick-icon">📋</span>Resultados generales
+            </a>
+            <a th:href="@{/estudiante/resolucion}" class="quick-card">
+                <span class="quick-icon">📄</span>Resolución
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

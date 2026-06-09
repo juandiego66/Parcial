@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin — Facultades</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ADMINISTRADOR')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Facultades</h1>
+        <p>Gestión de facultades académicas</p>
+    </div>
+
+    <div th:if="${exito}" class="alert alert-success">✓ <span th:text="${exito}"></span></div>
+    <div th:if="${error}" class="alert alert-danger">⚠ <span th:text="${error}"></span></div>
+
+    <div class="card">
+        <div class="card-title"
+             th:text="${facultad.id != null} ? 'Editar facultad' : 'Nueva facultad'"></div>
+        <form th:action="@{/admin/facultades/guardar}" th:object="${facultad}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" th:field="*{nombre}" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" th:field="*{descripcion}">
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a th:href="@{/admin/facultades}" class="btn btn-ghost">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Listado de facultades</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th><th>Nombre</th><th>Descripción</th>
+                        <th>Docentes</th><th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="f : ${facultades}">
+                        <td th:text="${f.id}"></td>
+                        <td th:text="${f.nombre}"></td>
+                        <td th:text="${f.descripcion}"></td>
+                        <td th:text="${#lists.size(f.docentes)}"></td>
+                        <td>
+                            <div class="td-actions">
+                                <a th:href="@{/admin/facultades/editar/{id}(id=${f.id})}"
+                                   class="btn btn-ghost btn-sm">Editar</a>
+                                <a th:href="@{/admin/facultades/eliminar/{id}(id=${f.id})}"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(facultades)}">
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-icon">🏛️</div>
+                                <p>No hay facultades registradas</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

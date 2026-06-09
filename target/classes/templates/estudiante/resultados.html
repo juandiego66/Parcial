@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiante — Resultados generales</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ESTUDIANTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Resultados generales</h1>
+        <p>Consulta informativa de todos los resultados del programa</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Listado de resultados</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Registro</th><th>Estudiante</th><th>Programa</th>
+                        <th>Tipo</th><th>Puntaje</th><th>Nivel</th>
+                        <th>Inglés</th><th>Beneficio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${resultados}"
+                        th:classappend="${r.estudiante != null and
+                            r.estudiante.numeroCedula == estudiante.numeroCedula}
+                            ? 'fila-propia' : ''">
+                        <td th:text="${r.numeroRegistro}"></td>
+                        <td>
+                            <span th:text="${r.estudiante != null ?
+                                r.estudiante.nombreCompleto : '—'}"></span>
+                            <span th:if="${r.estudiante != null and
+                                r.estudiante.numeroCedula == estudiante.numeroCedula}"
+                                  class="badge badge-primary"
+                                  style="margin-left:6px;">Yo</span>
+                        </td>
+                        <td th:text="${r.estudiante != null ?
+                            r.estudiante.programa : '—'}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            (r.estudiante.tipoPrograma.name() == 'TECNOLOGIA' ?
+                            'TYT' : 'Pro') : '—'}"></td>
+                        <td><strong th:text="${r.puntajeTotal}"></strong></td>
+                        <td th:text="${r.puntajeNivel}"></td>
+                        <td th:text="${r.nivelIngles}"></td>
+                        <td>
+                            <span th:if="${r.tieneBeneficio}"
+                                  class="badge badge-success"
+                                  th:text="${r.tipoBeneficio}"></span>
+                            <span th:unless="${r.tieneBeneficio}"
+                                  class="badge badge-danger">Sin beneficio</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(resultados)}">
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-icon">📋</div>
+                                <p>No hay resultados disponibles aún</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

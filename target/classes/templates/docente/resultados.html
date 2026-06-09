@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Docente — Resultados</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('DOCENTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Resultados Saber Pro</h1>
+        <p>Consulta por cédula o por facultad</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Buscar por cédula</div>
+        <form th:action="@{/docente/resultados}" method="get"
+              style="display:flex; gap:10px; align-items:flex-end;">
+            <div class="form-group" style="flex:1;">
+                <label>Cédula del estudiante</label>
+                <input type="text" name="cedula"
+                       th:value="${busquedaCedula}"
+                       placeholder="Ingrese la cédula">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <a th:href="@{/docente/resultados}" class="btn btn-ghost">Limpiar</a>
+        </form>
+
+        <div th:if="${resultadoBusqueda}" style="margin-top:16px;">
+            <div class="alert alert-success">
+                ✓ Resultado de
+                <strong th:text="${resultadoBusqueda.estudiante != null ?
+                    resultadoBusqueda.estudiante.nombreCompleto : '—'}"></strong>
+                — Puntaje: <strong th:text="${resultadoBusqueda.puntajeTotal}"></strong>
+                <a th:href="@{/docente/resultados/{id}(id=${resultadoBusqueda.id})}"
+                   class="btn btn-info btn-sm" style="margin-left:10px;">Ver detalle</a>
+            </div>
+        </div>
+        <div th:if="${busquedaCedula != null and resultadoBusqueda == null}"
+             class="alert alert-danger" style="margin-top:12px;">
+            ⚠ No se encontró resultado para esa cédula
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Filtrar por facultad</div>
+        <form th:action="@{/docente/resultados}" method="get"
+              style="display:flex; gap:10px; align-items:flex-end; margin-bottom:16px;">
+            <div class="form-group" style="flex:1;">
+                <label>Facultad</label>
+                <select name="facultadId">
+                    <option value="">Todas</option>
+                    <option th:each="f : ${facultades}"
+                            th:value="${f.id}"
+                            th:text="${f.nombre}"
+                            th:selected="${f.id == facultadSeleccionada}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a th:href="@{/docente/resultados}" class="btn btn-ghost">Ver todos</a>
+        </form>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Registro</th><th>Estudiante</th><th>Programa</th>
+                        <th>Tipo</th><th>Puntaje</th><th>Nivel</th>
+                        <th>Inglés</th><th>Beneficio</th><th>Título</th><th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${resultados}">
+                        <td th:text="${r.numeroRegistro}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            r.estudiante.nombreCompleto : '—'}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            r.estudiante.programa : '—'}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            (r.estudiante.tipoPrograma.name() == 'TECNOLOGIA' ?
+                            'TYT' : 'Pro') : '—'}"></td>
+                        <td><strong th:text="${r.puntajeTotal}"></strong></td>
+                        <td th:text="${r.puntajeNivel}"></td>
+                        <td th:text="${r.nivelIngles}"></td>
+                        <td>
+                            <span th:if="${r.tieneBeneficio}"
+                                  class="badge badge-success"
+                                  th:text="${r.tipoBeneficio}"></span>
+                            <span th:unless="${r.tieneBeneficio}"
+                                  class="badge badge-danger">Sin beneficio</span>
+                        </td>
+                        <td>
+                            <span th:if="${r.puedeRecibirTitulo}"
+                                  class="badge badge-success">✓</span>
+                            <span th:unless="${r.puedeRecibirTitulo}"
+                                  class="badge badge-danger">✗</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/docente/resultados/{id}(id=${r.id})}"
+                               class="btn btn-ghost btn-sm">Ver más</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(resultados)}">
+                        <td colspan="10">
+                            <div class="empty-state">
+                                <div class="empty-icon">📊</div>
+                                <p>No hay resultados</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiante — Mi Pago</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ESTUDIANTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Mi pago Saber Pro</h1>
+        <p>Registra el número de comprobante de pago del examen</p>
+    </div>
+
+    <div th:if="${exito}" class="alert alert-success">✓ <span th:text="${exito}"></span></div>
+    <div th:if="${error}" class="alert alert-danger">⚠ <span th:text="${error}"></span></div>
+
+    <div th:if="${estudiante.pagoSaberPro}" class="alert alert-success">
+        ✓ Pago registrado — Comprobante:
+        <span class="comprobante" th:text="${estudiante.comprobantePago}"></span>
+    </div>
+
+    <div class="card" style="max-width:520px; margin:0 auto;">
+        <div class="card-title">Registrar comprobante</div>
+
+        <div class="alert alert-info" style="margin-bottom:20px;">
+            ℹ Realiza el pago del examen en el banco o plataforma indicada.
+            Una vez tengas el número de comprobante, ingrésalo aquí.
+        </div>
+
+        <form th:action="@{/estudiante/pago/guardar}" method="post">
+            <div class="form-group" style="margin-bottom:20px;">
+                <label>Número de comprobante *</label>
+                <input type="text"
+                       name="comprobantePago"
+                       th:value="${estudiante.comprobantePago}"
+                       placeholder="Ej: TRN-2026-001234"
+                       style="font-family:monospace;"
+                       required>
+                <span class="form-hint">
+                    Ingresa el número tal como aparece en tu recibo de pago
+                </span>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn btn-primary">Registrar pago</button>
+                <a th:href="@{/estudiante/dashboard}" class="btn btn-ghost">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
