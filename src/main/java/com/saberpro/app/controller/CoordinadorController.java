@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -112,13 +114,28 @@ public class CoordinadorController {
         return "coordinador/estudiantes";
     }
 
+    @Transactional
     @GetMapping("/estudiantes/eliminar/{id}")
     public String eliminarEstudiante(@PathVariable Long id,
                                      HttpSession session,
                                      RedirectAttributes ra) {
         if (!esCoordinador(session)) return "redirect:/login";
-        estudianteRepository.deleteById(id);
-        ra.addFlashAttribute("exito", "Estudiante eliminado correctamente.");
+
+        try {
+            // Primero eliminar el resultado si existe
+            resultadoRepository.findByEstudianteId(id)
+                .ifPresent(r -> resultadoRepository.delete(r));
+
+            // Luego eliminar el estudiante
+            estudianteRepository.deleteById(id);
+
+            ra.addFlashAttribute("exito", "Estudiante eliminado correctamente.");
+
+        } catch (Exception e) {
+            ra.addFlashAttribute("error",
+                "No se pudo eliminar el estudiante: " + e.getMessage());
+        }
+
         return "redirect:/coordinador/estudiantes";
     }
 
