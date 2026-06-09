@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin — Dashboard</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('ADMINISTRADOR')}"></div>
+<div class="container">
+    <div class="page-header">
+        <h1>Bienvenido, <span th:text="${usuario.primerNombre}"></span></h1>
+        <p>Panel de administración del sistema Saber Pro</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number" th:text="${totalDocentes}">0</div>
+            <div class="label">Docentes</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" th:text="${totalCoordinadores}">0</div>
+            <div class="label">Coordinadores</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" th:text="${totalFacultades}">0</div>
+            <div class="label">Facultades</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Accesos rápidos</div>
+        <div class="quick-grid">
+            <a th:href="@{/admin/docentes}" class="quick-card">
+                <span class="quick-icon">👨‍🏫</span>Docentes
+            </a>
+            <a th:href="@{/admin/coordinadores}" class="quick-card">
+                <span class="quick-icon">🧑‍💼</span>Coordinadores
+            </a>
+            <a th:href="@{/admin/facultades}" class="quick-card">
+                <span class="quick-icon">🏛️</span>Facultades
+            </a>
+            <a th:href="@{/admin/resolucion}" class="quick-card">
+                <span class="quick-icon">📄</span>Resolución
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

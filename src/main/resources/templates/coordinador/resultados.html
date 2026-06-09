@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinador — Resultados</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('COORDINADOR')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Resultados Saber Pro</h1>
+        <p>Consulta y filtrado de resultados por facultad y programa</p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Filtros</div>
+        <form th:action="@{/coordinador/resultados}" method="get"
+              style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="form-group" style="min-width:160px;">
+                <label>Facultad</label>
+                <select name="facultad" id="selFac" onchange="filtrarGrupos()">
+                    <option value="">Todas</option>
+                    <option value="Tecnología"
+                            th:selected="${facultadFiltro == 'Tecnología'}">
+                        Tecnología</option>
+                    <option value="Ingeniería"
+                            th:selected="${facultadFiltro == 'Ingeniería'}">
+                        Ingeniería</option>
+                </select>
+            </div>
+            <div class="form-group" style="min-width:200px;">
+                <label>Programa</label>
+                <select name="programa" id="selProg">
+                    <option value="">Todos</option>
+                    <optgroup label="Tecnología" id="gTec">
+                        <option value="Sistemas Informáticos"
+                                th:selected="${programaSeleccionado == 'Sistemas Informáticos'}">
+                            Sistemas Informáticos</option>
+                        <option value="Telecomunicaciones"
+                                th:selected="${programaSeleccionado == 'Telecomunicaciones'}">
+                            Telecomunicaciones</option>
+                        <option value="Electromecanica"
+                                th:selected="${programaSeleccionado == 'Electromecanica'}">
+                            Electromecanica</option>
+                    </optgroup>
+                    <optgroup label="Ingeniería" id="gIng">
+                        <option value="Ingeniería de Sistemas"
+                                th:selected="${programaSeleccionado == 'Ingeniería de Sistemas'}">
+                            Ingeniería de Sistemas</option>
+                        <option value="Ingeniería Industrial"
+                                th:selected="${programaSeleccionado == 'Ingeniería Industrial'}">
+                            Ingeniería Industrial</option>
+                        <option value="Ingeniería Electromecánica"
+                                th:selected="${programaSeleccionado == 'Ingeniería Electromecánica'}">
+                            Ingeniería Electromecánica</option>
+                    </optgroup>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a th:href="@{/coordinador/resultados}" class="btn btn-ghost">Limpiar</a>
+        </form>
+        <div th:if="${programaSeleccionado != null and !programaSeleccionado.isEmpty()}"
+             style="margin-top:12px;">
+            <span class="badge badge-primary"
+                  th:text="${programaSeleccionado}"></span>
+            <span style="font-size:12px; color:var(--gray-400); margin-left:6px;"
+                  th:text="${#lists.size(resultados) + ' resultado(s)'}"></span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Listado de resultados</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Registro</th>
+                        <th>Estudiante</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Puntaje</th>
+                        <th>Nivel</th>
+                        <th>Inglés</th>
+                        <th>Beneficio</th>
+                        <th>Título</th>
+                        <th>Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${resultados}">
+                        <td th:text="${r.numeroRegistro}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            r.estudiante.nombreCompleto : '—'}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            (r.estudiante.tipoPrograma.name() == 'TECNOLOGIA' ?
+                            'Tecnología' : 'Ingeniería') : '—'}"></td>
+                        <td th:text="${r.estudiante != null ?
+                            r.estudiante.programa : '—'}"></td>
+                        <td><strong th:text="${r.puntajeTotal}"></strong></td>
+                        <td th:text="${r.puntajeNivel}"></td>
+                        <td th:text="${r.nivelIngles}"></td>
+                        <td>
+                            <span th:if="${r.tieneBeneficio}"
+                                  class="badge badge-success"
+                                  th:text="${r.tipoBeneficio}"></span>
+                            <span th:unless="${r.tieneBeneficio}"
+                                  class="badge badge-danger">Sin beneficio</span>
+                        </td>
+                        <td>
+                            <span th:if="${r.puedeRecibirTitulo}"
+                                  class="badge badge-success">✓ Sí</span>
+                            <span th:unless="${r.puedeRecibirTitulo}"
+                                  class="badge badge-danger">✗ No</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/coordinador/resultados/{id}(id=${r.id})}"
+                               class="btn btn-ghost btn-sm">Ver más</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(resultados)}">
+                        <td colspan="10">
+                            <div class="empty-state">
+                                <div class="empty-icon">📊</div>
+                                <p>No hay resultados para este filtro</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+function filtrarGrupos() {
+    const v = document.getElementById('selFac').value;
+    const gT = document.getElementById('gTec');
+    const gI = document.getElementById('gIng');
+    document.getElementById('selProg').value = '';
+    gT.style.display = v === 'Ingeniería' ? 'none' : '';
+    gI.style.display = v === 'Tecnología' ? 'none' : '';
+}
+window.onload = filtrarGrupos;
+</script>
+</body>
+</html>

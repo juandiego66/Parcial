@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinador - Cargar Resultado</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('COORDINADOR')}"></div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-title">📥 Cargar Resultado Saber Pro</div>
+        <form th:action="@{/coordinador/resultados/guardar}"
+              th:object="${resultado}" method="post">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Estudiante *</label>
+                    <select th:field="*{estudiante.id}" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option th:each="e : ${estudiantes}"
+                                th:value="${e.id}"
+                                th:text="${e.nombreCompleto + ' - ' + e.numeroRegistro}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>N° Registro</label>
+                    <input type="text" th:field="*{numeroRegistro}">
+                </div>
+                <div class="form-group">
+                    <label>Puntaje Global *</label>
+                    <input type="number" th:field="*{puntajeTotal}" required>
+                </div>
+                <div class="form-group">
+                    <label>Nivel Global</label>
+                    <select th:field="*{puntajeNivel}">
+                        <option value="">-- Seleccionar --</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+            </div>
+
+            <h4 style="color:#1a3a6b; margin:20px 0 14px;">Competencias Genéricas</h4>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Comunicación Escrita</label>
+                    <input type="number" step="0.1" th:field="*{comunicacionEscrita}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Com. Escrita</label>
+                    <select th:field="*{comunicacionEscritaNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Razonamiento Cuantitativo</label>
+                    <input type="number" step="0.1" th:field="*{razonamientoCuantitativo}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Razon. Cuantitativo</label>
+                    <select th:field="*{razonamientoCuantitativoNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Lectura Crítica</label>
+                    <input type="number" step="0.1" th:field="*{lecturaCritica}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Lectura Crítica</label>
+                    <select th:field="*{lecturaCriticaNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Competencias Ciudadanas</label>
+                    <input type="number" step="0.1" th:field="*{competenciasCiudadanas}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Comp. Ciudadanas</label>
+                    <select th:field="*{competenciasCiudadanasNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Inglés (Puntaje)</label>
+                    <input type="number" step="0.1" th:field="*{ingles}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Inglés</label>
+                    <select th:field="*{inglesNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nivel MCER Inglés</label>
+                    <select th:field="*{nivelIngles}">
+                        <option value="">--</option>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                    </select>
+                </div>
+            </div>
+
+            <h4 style="color:#1a3a6b; margin:20px 0 14px;">Competencias Específicas Ingeniería</h4>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Formulación Proyectos Ing.</label>
+                    <input type="number" step="0.1" th:field="*{formulacionProyectos}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Form. Proyectos</label>
+                    <select th:field="*{formulacionProyectosNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pensamiento Científico</label>
+                    <input type="number" step="0.1" th:field="*{pensamientoCientifico}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Pens. Científico</label>
+                    <select th:field="*{pensamientoCientificoNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Diseño de Software</label>
+                    <input type="number" step="0.1" th:field="*{disenoSoftware}">
+                </div>
+                <div class="form-group">
+                    <label>Nivel Diseño Software</label>
+                    <select th:field="*{disenoSoftwareNivel}">
+                        <option value="">--</option>
+                        <option value="Nivel 1">Nivel 1</option>
+                        <option value="Nivel 2">Nivel 2</option>
+                        <option value="Nivel 3">Nivel 3</option>
+                        <option value="Nivel 4">Nivel 4</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top:20px;">
+                <button type="submit" class="btn btn-primary">💾 Guardar Resultado</button>
+                <a th:href="@{/coordinador/resultados}"
+                   class="btn btn-warning" style="margin-left:8px;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

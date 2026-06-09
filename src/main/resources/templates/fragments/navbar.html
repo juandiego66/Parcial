@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+<nav th:fragment="navbar(rol)" class="navbar">
+    <div class="navbar-brand">
+        🎓 Saber Pro
+    </div>
+    <div class="navbar-links">
+
+        <th:block th:if="${rol == 'ADMINISTRADOR'}">
+            <a th:href="@{/admin/dashboard}">Inicio</a>
+            <a th:href="@{/admin/docentes}">Docentes</a>
+            <a th:href="@{/admin/coordinadores}">Coordinadores</a>
+            <a th:href="@{/admin/facultades}">Facultades</a>
+            <a th:href="@{/admin/resolucion}">Resolución</a>
+        </th:block>
+
+        <th:block th:if="${rol == 'COORDINADOR'}">
+            <a th:href="@{/coordinador/dashboard}">Inicio</a>
+            <a th:href="@{/coordinador/estudiantes}">Estudiantes</a>
+            <a th:href="@{/coordinador/pagos}">Pagos</a>
+            <a th:href="@{/coordinador/aprobar}">Aprobar</a>
+            <a th:href="@{/coordinador/resultados}">Resultados</a>
+            <a th:href="@{/coordinador/beneficios}">Beneficios</a>
+            <a th:href="@{/coordinador/resolucion}">Resolución</a>
+        </th:block>
+
+        <th:block th:if="${rol == 'DOCENTE'}">
+            <a th:href="@{/docente/dashboard}">Inicio</a>
+            <a th:href="@{/docente/docentes}">Docentes</a>
+            <a th:href="@{/docente/resultados}">Resultados</a>
+            <a th:href="@{/docente/beneficios}">Beneficios</a>
+            <a th:href="@{/docente/resolucion}">Resolución</a>
+        </th:block>
+
+        <th:block th:if="${rol == 'ESTUDIANTE'}">
+            <a th:href="@{/estudiante/dashboard}">Inicio</a>
+            <a th:href="@{/estudiante/pago}">Mi Pago</a>
+            <a th:href="@{/estudiante/resultado}">Mi Resultado</a>
+            <a th:href="@{/estudiante/resultados}">Resultados</a>
+            <a th:href="@{/estudiante/resolucion}">Resolución</a>
+        </th:block>
+
+        <a th:href="@{/logout}" class="btn-logout">Salir</a>
+    </div>
+</nav>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinador — Pagos</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('COORDINADOR')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Pagos Saber Pro</h1>
+        <p>Revisión y aprobación de comprobantes de pago</p>
+    </div>
+
+    <div th:if="${exito}" class="alert alert-success">✓ <span th:text="${exito}"></span></div>
+    <div th:if="${error}" class="alert alert-danger">⚠ <span th:text="${error}"></span></div>
+
+    <div class="stats-grid">
+        <div class="stat-card success">
+            <div class="number" th:text="${totalPago}">0</div>
+            <div class="label">Pagos aceptados</div>
+        </div>
+        <div class="stat-card danger">
+            <div class="number" th:text="${totalSinPago}">0</div>
+            <div class="label">Pagos pendientes</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Estado de pagos</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Estudiante</th>
+                        <th>Programa</th>
+                        <th>Facultad</th>
+                        <th>N° Registro</th>
+                        <th>Comprobante</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="e : ${conPago}">
+                        <td th:text="${e.numeroCedula}"></td>
+                        <td th:text="${e.nombreCompleto}"></td>
+                        <td th:text="${e.programa}"></td>
+                        <td th:text="${e.tipoPrograma.name() == 'TECNOLOGIA' ?
+                            'Tecnología' : 'Ingeniería'}"></td>
+                        <td th:text="${e.numeroRegistro}"></td>
+                        <td>
+                            <span class="comprobante"
+                                  th:text="${e.comprobantePago}"></span>
+                        </td>
+                        <td>
+                            <span class="badge badge-success">Aceptado</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/coordinador/estudiantes/calificar/{id}(id=${e.id})}"
+                               class="btn btn-info btn-sm">Ver resultado</a>
+                        </td>
+                    </tr>
+                    <tr th:each="e : ${sinPago}">
+                        <td th:text="${e.numeroCedula}"></td>
+                        <td th:text="${e.nombreCompleto}"></td>
+                        <td th:text="${e.programa}"></td>
+                        <td th:text="${e.tipoPrograma.name() == 'TECNOLOGIA' ?
+                            'Tecnología' : 'Ingeniería'}"></td>
+                        <td th:text="${e.numeroRegistro}"></td>
+                        <td>
+                            <span style="color:var(--gray-400); font-size:12px;">
+                                Sin comprobante
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-warning">Pendiente</span>
+                        </td>
+                        <td>
+                            <form th:action="@{/coordinador/pagos/aprobar/{id}(id=${e.id})}"
+                                  method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-success btn-sm"
+                                        onclick="return confirm('¿Aceptar pago?')">
+                                    Aceptar pago
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(conPago) and #lists.isEmpty(sinPago)}">
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <div class="empty-icon">💳</div>
+                                <p>No hay estudiantes registrados</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

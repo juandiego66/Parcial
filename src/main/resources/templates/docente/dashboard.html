@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Docente — Dashboard</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('DOCENTE')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Bienvenido, <span th:text="${usuario.primerNombre}"></span></h1>
+        <p>Facultad: <strong th:text="${facultad != null ? facultad : 'No asignada'}"></strong></p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number" th:text="${totalEstudiantes}">0</div>
+            <div class="label">Total estudiantes</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" th:text="${totalResultados}">0</div>
+            <div class="label">Resultados</div>
+        </div>
+        <div class="stat-card success">
+            <div class="number" th:text="${totalBeneficios}">0</div>
+            <div class="label">Con beneficio</div>
+        </div>
+        <div class="stat-card">
+            <div class="number"
+                 th:text="${docentesPorFacultad != null ? docentesPorFacultad : 0}">0</div>
+            <div class="label">Docentes en mi facultad</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Accesos rápidos</div>
+        <div class="quick-grid">
+            <a th:href="@{/docente/docentes}" class="quick-card">
+                <span class="quick-icon">👨‍🏫</span>Docentes
+            </a>
+            <a th:href="@{/docente/resultados}" class="quick-card">
+                <span class="quick-icon">📊</span>Resultados
+            </a>
+            <a th:href="@{/docente/beneficios}" class="quick-card">
+                <span class="quick-icon">🎁</span>Beneficios
+            </a>
+            <a th:href="@{/docente/resolucion}" class="quick-card">
+                <span class="quick-icon">📄</span>Resolución
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

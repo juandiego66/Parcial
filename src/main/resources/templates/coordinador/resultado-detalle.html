@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinador - Detalle Resultado</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+    <style>
+        .detalle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .competencia-card {
+            background: #f7f9fc;
+            border-radius: 10px;
+            padding: 16px;
+            border-left: 4px solid #1a3a6b;
+        }
+        .competencia-card h4     { color:#1a3a6b; font-size:14px; margin-bottom:8px; }
+        .competencia-card .puntaje { font-size:28px; font-weight:700; color:#1a3a6b; }
+        .competencia-card .nivel   { font-size:13px; color:#777; margin-top:4px; }
+        .puntaje-global {
+            text-align:center; padding:28px;
+            background: linear-gradient(135deg,#1a3a6b,#2d6a9f);
+            color:white; border-radius:12px; margin-bottom:24px;
+        }
+        .puntaje-global .num { font-size:56px; font-weight:700; }
+        .puntaje-global .lbl { font-size:15px; opacity:0.85; margin-top:4px; }
+        .detalle-beneficio {
+            background: rgba(255,255,255,0.15);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.65;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('COORDINADOR')}"></div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-title">
+            🔍 Detalle — <span th:text="${resultado.estudiante != null ?
+                resultado.estudiante.nombreCompleto : resultado.numeroRegistro}"></span>
+        </div>
+
+        <!-- Info estudiante -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+                    gap:12px; margin-bottom:24px; font-size:14px;">
+            <div><strong>N° Registro:</strong>
+                <span th:text="${resultado.numeroRegistro}"></span></div>
+            <div><strong>Cédula:</strong>
+                <span th:text="${resultado.estudiante != null ?
+                    resultado.estudiante.numeroCedula : '-'}"></span></div>
+            <div><strong>Programa:</strong>
+                <span th:text="${resultado.estudiante != null ?
+                    resultado.estudiante.programa : '-'}"></span></div>
+            <div><strong>Tipo:</strong>
+                <span th:text="${resultado.estudiante != null ?
+                    (resultado.estudiante.tipoPrograma.name() == 'TECNOLOGIA' ?
+                    'Tecnología (TYT)' : 'Profesional (Saber Pro)') : '-'}"></span></div>
+            <div><strong>Semestre:</strong>
+                <span th:text="${resultado.estudiante != null ?
+                    resultado.estudiante.semestre : '-'}"></span></div>
+            <div><strong>Nivel Inglés MCER:</strong>
+                <span th:text="${resultado.nivelIngles}"></span></div>
+            <div><strong>Aprobado:</strong>
+                <span th:if="${resultado.estudiante != null and resultado.estudiante.aprobadoSaberPro}"
+                      class="badge badge-success">✅ Sí</span>
+                <span th:unless="${resultado.estudiante != null and resultado.estudiante.aprobadoSaberPro}"
+                      class="badge badge-danger">❌ No</span>
+            </div>
+            <div><strong>Pago:</strong>
+                <span th:if="${resultado.estudiante != null and resultado.estudiante.pagoSaberPro}"
+                      class="badge badge-success">✅ Aceptado</span>
+                <span th:unless="${resultado.estudiante != null and resultado.estudiante.pagoSaberPro}"
+                      class="badge badge-warning">⏳ Pendiente</span>
+            </div>
+        </div>
+
+        <!-- Puntaje global -->
+        <div class="puntaje-global">
+            <div class="num" th:text="${resultado.puntajeTotal}">--</div>
+            <div class="lbl" th:text="${resultado.puntajeNivel}">Nivel</div>
+
+            <!-- Beneficio dentro del banner azul -->
+            <div style="margin-top:14px;">
+                <span th:if="${resultado.tieneBeneficio}"
+                      style="background:rgba(255,255,255,0.2); padding:6px 16px;
+                             border-radius:20px; font-size:14px;"
+                      th:text="'🎁 ' + ${resultado.tipoBeneficio}"></span>
+                <span th:unless="${resultado.tieneBeneficio}"
+                      style="background:rgba(231,76,60,0.25); padding:6px 16px;
+                             border-radius:20px; font-size:14px;">
+                    ❌ Sin beneficio
+                </span>
+            </div>
+
+            <!-- Descripción detallada del beneficio -->
+            <div th:if="${resultado.descripcionBeneficio}" class="detalle-beneficio">
+                <span th:text="${resultado.descripcionBeneficio}"></span>
+            </div>
+
+            <!-- Estado título -->
+            <div style="margin-top:12px;">
+                <span th:if="${resultado.puedeRecibirTitulo}"
+                      style="background:rgba(39,174,96,0.25); padding:5px 14px;
+                             border-radius:20px; font-size:13px;">
+                    🎓 Puede recibir título de grado
+                </span>
+                <span th:unless="${resultado.puedeRecibirTitulo}"
+                      style="background:rgba(231,76,60,0.25); padding:5px 14px;
+                             border-radius:20px; font-size:13px;">
+                    ⚠️ No puede recibir título — debe volver a presentar la prueba
+                </span>
+            </div>
+        </div>
+
+        <!-- Competencias genéricas -->
+        <h4 style="color:#1a3a6b; margin-bottom:14px;">Competencias Genéricas</h4>
+        <div class="detalle-grid" style="margin-bottom:24px;">
+            <div class="competencia-card">
+                <h4>Comunicación Escrita</h4>
+                <div class="puntaje" th:text="${resultado.comunicacionEscrita}"></div>
+                <div class="nivel"   th:text="${resultado.comunicacionEscritaNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Razonamiento Cuantitativo</h4>
+                <div class="puntaje" th:text="${resultado.razonamientoCuantitativo}"></div>
+                <div class="nivel"   th:text="${resultado.razonamientoCuantitativoNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Lectura Crítica</h4>
+                <div class="puntaje" th:text="${resultado.lecturaCritica}"></div>
+                <div class="nivel"   th:text="${resultado.lecturaCriticaNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Competencias Ciudadanas</h4>
+                <div class="puntaje" th:text="${resultado.competenciasCiudadanas}"></div>
+                <div class="nivel"   th:text="${resultado.competenciasCiudadanasNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Inglés</h4>
+                <div class="puntaje" th:text="${resultado.ingles}"></div>
+                <div class="nivel"
+                     th:text="${resultado.inglesNivel + ' — ' + resultado.nivelIngles}"></div>
+            </div>
+        </div>
+
+        <!-- Competencias específicas -->
+        <h4 style="color:#1a3a6b; margin-bottom:14px;">
+            Competencias Específicas Ingeniería
+        </h4>
+        <div class="detalle-grid">
+            <div class="competencia-card">
+                <h4>Formulación Proyectos de Ingeniería</h4>
+                <div class="puntaje" th:text="${resultado.formulacionProyectos}"></div>
+                <div class="nivel"   th:text="${resultado.formulacionProyectosNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Pensamiento Científico</h4>
+                <div class="puntaje" th:text="${resultado.pensamientoCientifico}"></div>
+                <div class="nivel"   th:text="${resultado.pensamientoCientificoNivel}"></div>
+            </div>
+            <div class="competencia-card">
+                <h4>Diseño de Software</h4>
+                <div class="puntaje" th:text="${resultado.disenoSoftware}"></div>
+                <div class="nivel"   th:text="${resultado.disenoSoftwareNivel}"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:24px;">
+            <a th:href="@{/coordinador/resultados}" class="btn btn-primary">← Volver</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

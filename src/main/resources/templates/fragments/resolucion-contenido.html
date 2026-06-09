@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+<div th:fragment="contenido">
+    <style>
+        .res-header {
+            text-align: center;
+            border-bottom: 3px double #1a3a6b;
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+        }
+        .res-header h2 { color: #1a3a6b; font-size: 22px; }
+        .res-header h3 { color: #2d6a9f; font-size: 17px; margin-top: 6px; }
+        .res-header p  { color: #666; font-size: 13px; margin-top: 4px; }
+        .articulo {
+            margin-bottom: 22px;
+            padding: 18px 20px;
+            border-left: 4px solid #1a3a6b;
+            background: #f7f9fc;
+            border-radius: 0 8px 8px 0;
+        }
+        .articulo h4 { color: #1a3a6b; margin-bottom: 10px; font-size: 15px; }
+        .articulo p  { font-size: 14px; line-height: 1.75; color: #555; }
+        .seccion-titulo {
+            background: #1a3a6b;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 28px 0 16px;
+        }
+        .tabla-res th { background: #1a3a6b; color: white; }
+        .tabla-res td { font-size: 13px; vertical-align: top; }
+        .nota-alta   { color: #27ae60; font-weight: 700; }
+        .nota-media  { color: #f39c12; font-weight: 700; }
+        .sin-ben     { color: #e74c3c; font-weight: 700; }
+    </style>
+
+    <div class="res-header">
+        <h2>📄 Resolución de Beneficios</h2>
+        <h3>Tecnología e Ingeniería — Saber Pro / TYT</h3>
+        <p>Facultad de Ingeniería y Tecnología — Vigencia: Año 2026</p>
+    </div>
+
+    <!-- ARTÍCULO 1 -->
+    <div class="articulo">
+        <h4>Artículo 1. Objeto</h4>
+        <p>La presente resolución establece los beneficios académicos y económicos
+           otorgados a los estudiantes de los programas de Tecnología e Ingeniería
+           que obtengan resultados en las pruebas Saber Pro y Saber T&T del ICFES,
+           conforme a los rangos de puntaje definidos a continuación.</p>
+    </div>
+
+    <!-- ARTÍCULO 2 — TYT -->
+    <div class="seccion-titulo">📘 Saber T&T — Programas de Tecnología</div>
+
+    <div class="articulo">
+        <h4>Artículo 2. Beneficios Saber T&T</h4>
+        <p style="margin-bottom:14px;">
+            Los beneficios para estudiantes de programas tecnológicos se otorgan
+            según el puntaje obtenido en la prueba Saber T&T:
+        </p>
+        <table class="tabla-res">
+            <thead>
+                <tr>
+                    <th>Rango de Puntaje</th>
+                    <th>Beneficio</th>
+                    <th>Nota Seminario Grado II</th>
+                    <th>Beca Derecho de Grado</th>
+                    <th>Título</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Menor a 80</strong></td>
+                    <td class="sin-ben">Sin beneficio</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td class="sin-ben">❌ No puede recibir título.<br>
+                        Debe volver a presentar la prueba.</td>
+                </tr>
+                <tr>
+                    <td><strong>120 – 150</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado II</td>
+                    <td class="nota-media">4.5</td>
+                    <td>—</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+                <tr>
+                    <td><strong>151 – 170</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado II</td>
+                    <td class="nota-alta">4.7</td>
+                    <td class="nota-media">50% becado</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+                <tr>
+                    <td><strong>171 o más</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado II</td>
+                    <td class="nota-alta">5.0</td>
+                    <td class="nota-alta">100% becado</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="margin-top:12px; font-size:13px; color:#888;">
+            * Puntajes entre 80 y 119 no generan beneficio económico pero permiten
+            recibir el título.
+        </p>
+    </div>
+
+    <!-- ARTÍCULO 3 — Saber Pro -->
+    <div class="seccion-titulo">📗 Saber Pro — Programas de Ingeniería</div>
+
+    <div class="articulo">
+        <h4>Artículo 3. Beneficios Saber Pro</h4>
+        <p style="margin-bottom:14px;">
+            Los beneficios para estudiantes de programas profesionales se otorgan
+            según el puntaje obtenido en la prueba Saber Pro:
+        </p>
+        <table class="tabla-res">
+            <thead>
+                <tr>
+                    <th>Rango de Puntaje</th>
+                    <th>Beneficio</th>
+                    <th>Nota Seminario Grado IV</th>
+                    <th>Beca Derecho de Grado</th>
+                    <th>Título</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Menor a 120</strong></td>
+                    <td class="sin-ben">Sin beneficio</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td class="sin-ben">❌ No puede recibir título.<br>
+                        Debe volver a presentar la prueba.</td>
+                </tr>
+                <tr>
+                    <td><strong>120 – 210</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado IV</td>
+                    <td class="nota-media">4.5</td>
+                    <td>—</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+                <tr>
+                    <td><strong>211 – 240</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado IV</td>
+                    <td class="nota-alta">4.7</td>
+                    <td class="nota-media">50% becado</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+                <tr>
+                    <td><strong>241 o más</strong></td>
+                    <td>Exención entrega informe final del trabajo de grado
+                        (concepto aprobado) <strong>o</strong> exoneración
+                        Seminario de Grado IV</td>
+                    <td class="nota-alta">5.0</td>
+                    <td class="nota-alta">100% becado</td>
+                    <td>✅ Puede recibir título</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ARTÍCULO 4 -->
+    <div class="articulo">
+        <h4>Artículo 4. Requisitos para Acceder al Beneficio</h4>
+        <p>Para ser acreedor del beneficio, el estudiante debe: (a) estar matriculado
+           en un programa de Tecnología o Ingeniería activo, (b) haber presentado
+           oficialmente las pruebas Saber Pro o Saber T&T en el período vigente,
+           (c) tener paz y salvo con la institución, y (d) haber cargado el
+           comprobante de pago del examen en el sistema.</p>
+    </div>
+
+    <!-- ARTÍCULO 5 -->
+    <div class="articulo">
+        <h4>Artículo 5. Imposibilidad de Recibir Título</h4>
+        <p>El estudiante que obtenga un puntaje inferior a <strong>80 puntos en Saber T&T</strong>
+           o inferior a <strong>120 puntos en Saber Pro</strong> no podrá recibir su título
+           de grado en el período vigente. Deberá volver a presentar la prueba en la
+           siguiente convocatoria del ICFES y obtener el puntaje mínimo requerido antes
+           de tramitar su proceso de grado.</p>
+    </div>
+
+    <!-- ARTÍCULO 6 -->
+    <div class="articulo">
+        <h4>Artículo 6. Vigencia</h4>
+        <p>La presente resolución rige a partir de su aprobación y deroga todas las
+           disposiciones que le sean contrarias. Los beneficios aplican únicamente
+           para el período académico inmediatamente siguiente a la presentación
+           del examen.</p>
+    </div>
+</div>
+</body>
+</html>

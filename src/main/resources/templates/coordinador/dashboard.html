@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Coordinador — Dashboard</title>
+    <th:block th:replace="~{fragments/style :: estilos}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar('COORDINADOR')}"></div>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Bienvenido, <span th:text="${usuario.primerNombre}"></span></h1>
+        <p>Panel de coordinación académica</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="number" th:text="${totalEstudiantes}">0</div>
+            <div class="label">Estudiantes</div>
+        </div>
+        <div class="stat-card success">
+            <div class="number" th:text="${totalAprobados}">0</div>
+            <div class="label">Aprobados</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" th:text="${totalResultados}">0</div>
+            <div class="label">Resultados cargados</div>
+        </div>
+        <div class="stat-card success">
+            <div class="number" th:text="${totalBeneficios}">0</div>
+            <div class="label">Con beneficio</div>
+        </div>
+        <div class="stat-card danger">
+            <div class="number" th:text="${pendientesPago}">0</div>
+            <div class="label">Sin pago</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Accesos rápidos</div>
+        <div class="quick-grid">
+            <a th:href="@{/coordinador/estudiantes}" class="quick-card">
+                <span class="quick-icon">👨‍🎓</span>Estudiantes
+            </a>
+            <a th:href="@{/coordinador/pagos}" class="quick-card">
+                <span class="quick-icon">💳</span>Pagos
+            </a>
+            <a th:href="@{/coordinador/aprobar}" class="quick-card">
+                <span class="quick-icon">✅</span>Aprobar
+            </a>
+            <a th:href="@{/coordinador/resultados}" class="quick-card">
+                <span class="quick-icon">📊</span>Resultados
+            </a>
+            <a th:href="@{/coordinador/beneficios}" class="quick-card">
+                <span class="quick-icon">🎁</span>Beneficios
+            </a>
+            <a th:href="@{/coordinador/resolucion}" class="quick-card">
+                <span class="quick-icon">📄</span>Resolución
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
